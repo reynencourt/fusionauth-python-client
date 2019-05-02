@@ -1056,7 +1056,7 @@ class FusionAuthClient:
             user_id: The User's id
         """
         return self.start().uri('/api/user/family') \
-            .url_segment(user_id) \
+            .url_parameter('userId', user_id) \
             .get() \
             .go()
 
