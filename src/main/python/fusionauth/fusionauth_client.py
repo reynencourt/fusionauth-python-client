@@ -1048,6 +1048,30 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_family_members(self, user_id):
+        """
+        Retrieves all of the members of a family for a particular User by User Id.
+
+        Attributes:
+            user_id: The User's unique Id
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(user_id) \
+            .get() \
+            .go()
+
+    def retrieve_family_members_by_family_id(self, family_id):
+        """
+        Retrieves all of the members of a family by the unique Family Id.
+
+        Attributes:
+            family_id: The unique Id of the Family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
+            .get() \
+            .go()
+
     def retrieve_group(self, group_id):
         """
         Retrieves the group for the given Id.
