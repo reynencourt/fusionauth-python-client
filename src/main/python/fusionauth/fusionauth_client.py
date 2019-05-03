@@ -995,6 +995,16 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_consent_types(self):
+        """
+        Retrieves all of the consent types
+
+        Attributes:
+        """
+        return self.start().uri('/api/user/consent/type') \
+            .get() \
+            .go()
+
     def retrieve_consents(self, user_id):
         """
         Retrieves all of the consents that a user has.
