@@ -983,6 +983,30 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_consent(self, consent_id):
+        """
+        Retrieve a single consents by id.
+
+        Attributes:
+            consent_id: The consent id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(consent_id) \
+            .get() \
+            .go()
+
+    def retrieve_consents(self, user_id):
+        """
+        Retrieves all of the consents that a user has.
+
+        Attributes:
+            user_id: The User's id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
     def retrieve_daily_active_report(self, application_id, start, end):
         """
         Retrieves the daily active user report between the two instants. If you specify an application id, it will only
@@ -1050,7 +1074,7 @@ class FusionAuthClient:
 
     def retrieve_families(self, user_id):
         """
-        Retrieves all of the families that a user belongs to, which could be an empty list.
+        Retrieves all of the families that a user belongs to.
 
         Attributes:
             user_id: The User's id
@@ -1619,6 +1643,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def revoke_consent(self, consent_id):
+        """
+        Revokes a single consent by id.
+
+        Attributes:
+            consent_id: The Consent id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(consent_id) \
+            .delete() \
+            .go()
+
     def revoke_refresh_token(self, token, user_id, application_id):
         """
         Revokes a single refresh token, all tokens for a user or all tokens for an application. If you provide a user id
@@ -1775,6 +1811,20 @@ class FusionAuthClient:
             .url_segment(application_id) \
             .url_segment("role") \
             .url_segment(role_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_consent(self, consent_id, request):
+        """
+        Updates a single consent by id.
+
+        Attributes:
+            consent_id: The Consent id
+            request: The request that contains the consent information.
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(consent_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
