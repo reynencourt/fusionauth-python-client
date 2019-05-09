@@ -274,6 +274,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_user_consent_type(self, consent_type_id, request):
+        """
+        Creates a user consent type. You can optionally specify an Id for the consent type, if not provided one will be generated.
+
+        Attributes:
+            consent_type_id: (Optional) The Id for the consent type. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the user consent type.
+        """
+        return self.start().uri('/api/user/consent/type') \
+            .url_segment(consent_type_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_webhook(self, webhook_id, request):
         """
         Creates a webhook. You can optionally specify an Id for the webhook, if not provided one will be generated.
@@ -503,6 +517,18 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user-action-reason') \
             .url_segment(user_action_reason_id) \
+            .delete() \
+            .go()
+
+    def delete_user_consent_type(self, consent_type_id):
+        """
+        Deletes the user consent type for the given Id.
+
+        Attributes:
+            consent_type_id: The Id of the user consent type to delete.
+        """
+        return self.start().uri('/api/user/consent/type') \
+            .url_segment(consent_type_id) \
             .delete() \
             .go()
 
@@ -980,40 +1006,6 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/system/audit-log') \
             .url_segment(audit_log_id) \
-            .get() \
-            .go()
-
-    def retrieve_consent(self, consent_id):
-        """
-        Retrieve a single consents by id.
-
-        Attributes:
-            consent_id: The consent id
-        """
-        return self.start().uri('/api/user/consent') \
-            .url_segment(consent_id) \
-            .get() \
-            .go()
-
-    def retrieve_consent_types(self):
-        """
-        Retrieves all of the consent types
-
-        Attributes:
-        """
-        return self.start().uri('/api/user/consent/type') \
-            .get() \
-            .go()
-
-    def retrieve_consents(self, user_id):
-        """
-        Retrieves all of the consents that a user has.
-
-        Attributes:
-            user_id: The User's id
-        """
-        return self.start().uri('/api/user/consent') \
-            .url_parameter('userId', user_id) \
             .get() \
             .go()
 
@@ -1565,6 +1557,52 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_user_consent(self, consent_id):
+        """
+        Retrieve a single consents by id.
+
+        Attributes:
+            consent_id: The consent id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(consent_id) \
+            .get() \
+            .go()
+
+    def retrieve_user_consent_type(self, user_consent_type_id):
+        """
+        Retrieves the user consent type for the given Id.
+
+        Attributes:
+            user_consent_type_id: The Id of the user consent type.
+        """
+        return self.start().uri('/api/user/consent/type') \
+            .url_segment(user_consent_type_id) \
+            .get() \
+            .go()
+
+    def retrieve_user_consent_types(self):
+        """
+        Retrieves all of the user consent types.
+
+        Attributes:
+        """
+        return self.start().uri('/api/user/consent/type') \
+            .get() \
+            .go()
+
+    def retrieve_user_consents(self, user_id):
+        """
+        Retrieves all of the consents that a user has.
+
+        Attributes:
+            user_id: The User's id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_parameter('userId', user_id) \
+            .get() \
+            .go()
+
     def retrieve_user_login_report(self, application_id, user_id, start, end):
         """
         Retrieves the login report between the two instants for a particular user by Id. If you specify an application id, it will only return the
@@ -1653,18 +1691,6 @@ class FusionAuthClient:
             .get() \
             .go()
 
-    def revoke_consent(self, consent_id):
-        """
-        Revokes a single consent by id.
-
-        Attributes:
-            consent_id: The Consent id
-        """
-        return self.start().uri('/api/user/consent') \
-            .url_segment(consent_id) \
-            .delete() \
-            .go()
-
     def revoke_refresh_token(self, token, user_id, application_id):
         """
         Revokes a single refresh token, all tokens for a user or all tokens for an application. If you provide a user id
@@ -1679,6 +1705,18 @@ class FusionAuthClient:
             .url_parameter('token', token) \
             .url_parameter('userId', user_id) \
             .url_parameter('applicationId', application_id) \
+            .delete() \
+            .go()
+
+    def revoke_user_consent(self, consent_id):
+        """
+        Revokes a single consent by Id.
+
+        Attributes:
+            consent_id: The Consent Id
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(consent_id) \
             .delete() \
             .go()
 
@@ -1821,20 +1859,6 @@ class FusionAuthClient:
             .url_segment(application_id) \
             .url_segment("role") \
             .url_segment(role_id) \
-            .body_handler(JSONBodyHandler(request)) \
-            .put() \
-            .go()
-
-    def update_consent(self, consent_id, request):
-        """
-        Updates a single consent by id.
-
-        Attributes:
-            consent_id: The Consent id
-            request: The request that contains the consent information.
-        """
-        return self.start().uri('/api/user/consent') \
-            .url_segment(consent_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
@@ -1999,6 +2023,34 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/user-action-reason') \
             .url_segment(user_action_reason_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_user_consent(self, consent_id, request):
+        """
+        Updates a single user consent by Id.
+
+        Attributes:
+            consent_id: The Consent Id
+            request: The request that contains the user consent information.
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(consent_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
+    def update_user_consent_type(self, consent_type_id, request):
+        """
+        Updates the consent type with the given Id.
+
+        Attributes:
+            consent_type_id: The Id of the consent type to update.
+            request: The request that contains all of the new user consent type information.
+        """
+        return self.start().uri('/api/user/consent/type') \
+            .url_segment(consent_type_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
