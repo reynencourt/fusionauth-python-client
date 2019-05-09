@@ -1325,6 +1325,18 @@ class FusionAuthClient:
             .get() \
             .go()
 
+    def retrieve_pending_children(self, parent_email):
+        """
+        Retrieves all of the children for the given parent email address.
+
+        Attributes:
+            parent_email: The email of the parent.
+        """
+        return self.start().uri('/api/user/family/pending') \
+            .url_parameter('parentEmail', parent_email) \
+            .get() \
+            .go()
+
     def retrieve_recent_logins(self, offset, limit):
         """
         Retrieves the last number of login records.
