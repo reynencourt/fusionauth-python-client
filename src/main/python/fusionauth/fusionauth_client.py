@@ -47,6 +47,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def add_user_to_family(self, family_id, request):
+        """
+        Adds a user to an existing family. The family id must be specified.
+
+        Attributes:
+            family_id: The id of the family.
+            request: The request object that contains all of the information used to determine which user to add to the family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .put() \
+            .go()
+
     def cancel_action(self, action_id, request):
         """
         Cancels the user action.
@@ -172,6 +186,21 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/template') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def create_family(self, family_id, request):
+        """
+        Creates a family with the user id in the request as the owner and sole member of the family. You can optionally specify an id for the
+        family, if not provided one will be generated.
+
+        Attributes:
+            family_id: (Optional) The id for the family. If not provided a secure random UUID will be generated.
+            request: The request object that contains all of the information used to create the family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
@@ -895,6 +924,20 @@ class FusionAuthClient:
             .url_segment(user_id) \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
+            .go()
+
+    def remove_user_from_family(self, family_id, user_id):
+        """
+        Removes a user from the family with the given id.
+
+        Attributes:
+            family_id: The id of the family to remove the user from.
+            user_id: The id of the user to remove from the family.
+        """
+        return self.start().uri('/api/user/family') \
+            .url_segment(family_id) \
+            .url_segment(user_id) \
+            .delete() \
             .go()
 
     def resend_email_verification(self, email):
@@ -1792,6 +1835,18 @@ class FusionAuthClient:
         """
         return self.start().uri('/api/email/send') \
             .url_segment(email_template_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
+    def send_family_request_email(self, request):
+        """
+        Sends out an email to a parent that they need to register and create a family or need to log in and add a child to their existing family.
+
+        Attributes:
+            request: The request object that contains the parent email.
+        """
+        return self.start().uri('/api/user/family/request') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
