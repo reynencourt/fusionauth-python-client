@@ -317,6 +317,20 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def create_user_consent(self, user_consent_id, request):
+        """
+        Creates a single User consent.
+
+        Attributes:
+            user_consent_id: (Optional) The Id for the User consent. If not provided a secure random UUID will be generated.
+            request: The request that contains the user consent information.
+        """
+        return self.start().uri('/api/user/consent') \
+            .url_segment(user_consent_id) \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def create_webhook(self, webhook_id, request):
         """
         Creates a webhook. You can optionally specify an Id for the webhook, if not provided one will be generated.
@@ -1763,15 +1777,15 @@ class FusionAuthClient:
             .delete() \
             .go()
 
-    def revoke_user_consent(self, consent_id):
+    def revoke_user_consent(self, user_consent_id):
         """
-        Revokes a single consent by Id.
+        Revokes a single User consent by Id.
 
         Attributes:
-            consent_id: The Consent Id
+            user_consent_id: The User Consent Id
         """
         return self.start().uri('/api/user/consent') \
-            .url_segment(consent_id) \
+            .url_segment(user_consent_id) \
             .delete() \
             .go()
 
@@ -2108,16 +2122,16 @@ class FusionAuthClient:
             .put() \
             .go()
 
-    def update_user_consent(self, consent_id, request):
+    def update_user_consent(self, user_consent_id, request):
         """
-        Updates a single user consent by Id.
+        Updates a single User consent by Id.
 
         Attributes:
-            consent_id: The Consent Id
+            user_consent_id: The User Consent Id
             request: The request that contains the user consent information.
         """
         return self.start().uri('/api/user/consent') \
-            .url_segment(consent_id) \
+            .url_segment(user_consent_id) \
             .body_handler(JSONBodyHandler(request)) \
             .put() \
             .go()
