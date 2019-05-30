@@ -1813,6 +1813,18 @@ class FusionAuthClient:
             .post() \
             .go()
 
+    def search_login_records(self, request):
+        """
+        Searches the login records with the specified criteria and pagination.
+
+        Attributes:
+            request: The search criteria and pagination information.
+        """
+        return self.start().uri('/api/system/login/search') \
+            .body_handler(JSONBodyHandler(request)) \
+            .post() \
+            .go()
+
     def search_users(self, ids):
         """
         Retrieves the users for the given ids. If any id is invalid, it is ignored.
