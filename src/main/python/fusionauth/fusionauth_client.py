@@ -1820,7 +1820,7 @@ class FusionAuthClient:
         Attributes:
             request: The search criteria and pagination information.
         """
-        return self.start().uri('/api/system/login/search') \
+        return self.start().uri('/api/system/login-record/search') \
             .body_handler(JSONBodyHandler(request)) \
             .post() \
             .go()
